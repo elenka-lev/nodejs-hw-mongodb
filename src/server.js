@@ -37,6 +37,7 @@ export const setupServer = () => {
             return;
         }
         res.status(200).json({
+            message: "Successfully found contacts!",
             data: contact
         });
     });
@@ -53,7 +54,7 @@ export const setupServer = () => {
       error: err.message,
     });
     });
-    
+
     app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
