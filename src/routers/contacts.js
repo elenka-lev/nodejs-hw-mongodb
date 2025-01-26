@@ -5,7 +5,7 @@ import { ctrlWrapper } from "../utils/ctrlWrapper.js";
 
 const contactRouter = Router();
 
-contactRouter.get('/contact', ctrlWrapper(getContactsController));
+contactRouter.get('/contacts', ctrlWrapper(getContactsController));
 contactRouter.get('/contacts/:contactId', ctrlWrapper(getContactByIdController));
 contactRouter.delete('/contacts/:contactId', ctrlWrapper(deleteContactController));
 contactRouter.post('/contacts', ctrlWrapper(createContactController));
