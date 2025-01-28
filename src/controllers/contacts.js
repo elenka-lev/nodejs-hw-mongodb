@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { createContact, deleteContact, getAllContacts, getContactById, updateContacts } from "../services/contacts.js";
 import createHttpError from 'http-errors';
 
@@ -25,17 +26,7 @@ export const getContactByIdController = async (req, res, next) => {
     });
 };
 
-export const deleteContactController = async (req, res, next) => {
-  const { contactId } = req.params;
-  const contact = await deleteContact(contactId);
 
-  if (!contact) {
-    next (createHttpError(404, 'Contact not found'));
-    return;
-  }
-
-  res.status(204).send();
-};
 
 export const createContactController = async (req, res) => {
   const contact = await createContact(req.body);
@@ -49,6 +40,10 @@ export const createContactController = async (req, res) => {
 
 export const patchContactController = async (req, res, next) => {
   const { contactId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(contactId)) {
+    return next(createHttpError(400, 'Invalid contact ID'));
+  };
   const result = await updateContacts(contactId, req.body, {
     upsert: true,
   });
@@ -61,7 +56,19 @@ export const patchContactController = async (req, res, next) => {
 
   res.status(status).json({
     status,
-    message: `Successfully upserted a contact!`,
+    message: `Successfully patched a contact!`,
     data: result.contact,
   });
+};
+
+export const deleteContactController = async (req, res, next) => {
+  const { contactId } = req.params;
+  const contact = await deleteContact(contactId);
+
+  if (!contact) {
+    next (createHttpError(404, 'Contact not found'));
+    return;
+  }
+
+  res.status(204).send();
 };
