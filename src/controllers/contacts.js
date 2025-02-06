@@ -57,18 +57,16 @@ export const patchContactController = async (req, res, next) => {
   if (!mongoose.Types.ObjectId.isValid(contactId)) {
     return next(createHttpError(400, 'Invalid contact ID'));
   };
-  const result = await updateContacts(contactId, req.body, {
-    upsert: true,
-  });
+  const result = await updateContacts(contactId, req.body);
 
   if (!result) {
     next(createHttpError(404, 'Contact not found'));
     return;
   }
-  const status = result.isNew ? 201 : 200;
 
-  res.status(status).json({
-    status,
+
+  res.json({
+    status: 200,
     message: `Successfully patched a contact!`,
     data: result.contact,
   });
