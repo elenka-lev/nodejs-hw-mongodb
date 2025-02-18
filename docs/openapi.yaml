@@ -14,7 +14,7 @@ tags:
     description: Auth operations.
 servers:
   - url: http://localhost:2000
-  - url: ""
+  - url: https://hw7-swagger-wetu.onrender.com
 
 paths:
   /contacts:
